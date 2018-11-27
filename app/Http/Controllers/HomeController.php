@@ -9,7 +9,6 @@ class HomeController extends Controller
     function index()
     {
         $dataStorate = new SkypeSDK\Storage\FileStorage(sys_get_temp_dir());
-        $dataStorate = new SkypeSDK\Storage\FileStorage(sys_get_temp_dir());
         $config = new SkypeSDK\Config(
             'd65891ce-568b-4efd-ab57-180717dd30c8',
             'loECPW416^@_[lhgumFSJ33'
