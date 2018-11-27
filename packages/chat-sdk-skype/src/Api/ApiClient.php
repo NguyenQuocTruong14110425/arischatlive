@@ -62,6 +62,7 @@ class ApiClient {
     public function call(Command $command)
     {
         $result = $this->callCommand($command);
+        dd($result);
         if ($result === false) {
             if ($command instanceof Authenticate) {
                 throw new SecurityException('Failed to authenticate!');
