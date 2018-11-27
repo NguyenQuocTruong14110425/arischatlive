@@ -3,7 +3,8 @@ namespace SkypeSDK\Api;
 
 use SkypeSDK\Interfaces\ApiLogger;
 
-class HttpClient {
+class HttpClient
+{
 
     const METHOD_POST = 'post';
     const METHOD_GET = 'get';
@@ -126,10 +127,10 @@ class HttpClient {
 
         $result = $this->fetchResult($channel);
         if (!$result) {
-            $this->error = curl_error($channel);
+//            $this->error = curl_error($channel);
             $this->log($this->error);
         }
-           $this->error = $result;
+//        $this->error = $result;
         $this->closeCurl($channel);
         return $result;
     }
@@ -139,10 +140,15 @@ class HttpClient {
         return $this->error;
     }
 
+    public function getLogger()
+    {
+        return $this->logger;
+    }
     protected function fetchResult($channel)
     {
         $this->log('===============================');
         $response = curl_exec($channel);
+        $this->error = $response;
         $this->log($response);
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $body = substr($response, $headerSize);
