@@ -177,7 +177,7 @@ return [
         /*
          *
          */
-        \SkypeSDK\SkypeSDK::class,
+        SkypeSDK\SkypeSDKServiceProvider::class,
 
     ],
 
