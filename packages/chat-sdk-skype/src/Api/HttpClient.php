@@ -129,6 +129,7 @@ class HttpClient {
             $this->error = curl_error($channel);
             $this->log($this->error);
         }
+           $this->error = $result;
         $this->closeCurl($channel);
         return $result;
     }

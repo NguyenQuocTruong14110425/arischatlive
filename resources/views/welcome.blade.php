@@ -109,6 +109,8 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+                <span class="skype-button bubble " data-bot-id="d65891ce-568b-4efd-ab57-180717dd30c8"></span>
+                <script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>
         </div>
     </body>
 </html>

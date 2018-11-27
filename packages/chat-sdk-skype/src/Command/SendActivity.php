@@ -30,12 +30,13 @@ class SendActivity extends ApiCommand
     public function getApi()
     {
         $config = SkypeSDK::getInstance()->getConfig();
-        return new Api(
+        $result = new Api(
             $config->getApiEndpoint() . '/v3/conversations/' . $this->conversation . '/activities',
             array(
                 APi::PARAM_PARAMS => $this->activity->getRaw()
             )
         );
+        return $result;
     }
 
     /**

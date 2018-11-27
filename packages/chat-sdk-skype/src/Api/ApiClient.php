@@ -20,6 +20,9 @@ class ApiClient {
 
     private $httpClient;
 
+    private $errors;
+
+    private $success;
     /**
      * @var TokenProvider
      */
@@ -62,6 +65,7 @@ class ApiClient {
     public function call(Command $command)
     {
         $result = $this->callCommand($command);
+        $this->errors = $result;
         if ($result === false) {
             if ($command instanceof Authenticate) {
                 throw new SecurityException('Failed to authenticate!');
@@ -71,7 +75,14 @@ class ApiClient {
         }
         return $command->processResult($result);
     }
-
+    public function getError()
+    {
+        return $this->errors;
+    }
+    public function getSuccess()
+    {
+        return $this->success;
+    }
     private function callCommand(Command $command)
     {
         $api = $command->getApi();

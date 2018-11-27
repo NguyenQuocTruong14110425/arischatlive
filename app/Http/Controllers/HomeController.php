@@ -19,7 +19,25 @@ class HomeController extends Controller
             function($payload) {
                 dd($payload);
                 file_put_contents(
-                    sys_get_temp_dir() . '/conversation_id.txt',
+                    sys_get_temp_dir() . '/Message_id.txt',
+                    $payload->getConversation()->getId()
+                );
+            }
+        );
+        $bot->getNotificationListener()->setContactHandler(
+            function($payload) {
+                dd($payload);
+                file_put_contents(
+                    sys_get_temp_dir() . '/Contact_id.txt',
+                    $payload->getConversation()->getId()
+                );
+            }
+        );
+        $bot->getNotificationListener()->setConversationHandler(
+            function($payload) {
+                dd($payload);
+                file_put_contents(
+                    sys_get_temp_dir() . '/Conversation_id.txt',
                     $payload->getConversation()->getId()
                 );
             }
@@ -29,7 +47,7 @@ class HomeController extends Controller
     function send(Request $request)
     {
         $mess = $request->mess;
-        $conversation = '020202';
+        $conversation = '1111';
         $dataStorate = new SkypeSDK\Storage\FileStorage(sys_get_temp_dir());
         $config = new SkypeSDK\Config(
             'd65891ce-568b-4efd-ab57-180717dd30c8',
@@ -39,7 +57,9 @@ class HomeController extends Controller
         $bot->getApiClient()->call(
             new SkypeSDK\Command\SendMessage($mess,$conversation)
         );
-        dd($bot);
+        print_r($bot->getApiClient()->getError());
+        print_r($bot->getApiClient()->getSuccess());
+        dd($bot->getHttpClient()->getError());
        return redirect('/');
     }
 }
