@@ -1,0 +1,10 @@
+{
+    "name": "truong.nq/chat-sdk-skype",
+    "authors": [
+        {
+            "name": "Nguyen Quoc Truong",
+            "email": "truong.nq@aris-vn.com"
+        }
+    ],
+    "require": {}
+}
