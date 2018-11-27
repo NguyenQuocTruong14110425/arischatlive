@@ -125,11 +125,11 @@ class HttpClient {
         }
 
         $result = $this->fetchResult($channel);
+        $this->error = $result;
         if (!$result) {
-            $this->error = curl_error($channel);
+//            $this->error = curl_error($channel);
             $this->log($this->error);
         }
-           $this->error = $result;
         $this->closeCurl($channel);
         return $result;
     }
@@ -143,7 +143,7 @@ class HttpClient {
     {
         $this->log('===============================');
         $response = curl_exec($channel);
-        $this->log($response);
+        dd($response);
         $headerSize = curl_getinfo($channel, CURLINFO_HEADER_SIZE);
         $body = substr($response, $headerSize);
         return $body;
