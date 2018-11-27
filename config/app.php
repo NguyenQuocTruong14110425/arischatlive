@@ -121,7 +121,7 @@ return [
 
 	'key' =>'base64:Em3RQ/6/rt8lAkTPEwuvqmywxFVtFG2/uIHWS1tr3f8=',
 
-    'cipher' => 'MCRYPT_RIJNDAEL_128',
+    'cipher' => 'AES-128-CBC',
 
     /*
     |--------------------------------------------------------------------------
