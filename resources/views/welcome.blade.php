@@ -69,10 +69,14 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            .container
+            {
+                margin-top: 100px;
+            }
         </style>
     </head>
-    <body>
-        <div class="flex-center position-ref full-height row">
+    <body class="container">
+        <div class="row">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -87,10 +91,7 @@
                 </div>
             @endif
 
-            <div class="content col-12">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+            <div class="col-12">
                 <form method="post" action="/send">
                     @csrf
                     <div class="form-group">
@@ -101,18 +102,18 @@
                       <button type="submit" class="btn btn-success">send</button>
                     </div>
                 </form>
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
             </div>
                 <div class="col-12">
-                    <iframe src='https://webchat.botframework.com/embed/chat-bot-aris-demo?s=xjdWo2dp3KM.cwA.XFU.jDFWIinzKUah13KhuySD1-4T4xYkpUxpb85LBOLCUSs'  style='min-width: 400px; width: 100%; min-height: 500px;'></iframe>
+                    <div id = "webchat">
+
+                    </div>
                 </div>
+                <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+                <script>
+                    window.WebChat.renderWebChat({
+                        directLine: window.WebChat.createDirectLine({ token: 'xjdWo2dp3KM.cwA.evA.t6b4Bior5vI1XhHundA-fXWM2thvETeoVf6W2UltHE0' })
+                    }, document.getElementById('webchat'));
+                </script>
                 <span class="skype-button bubble " data-bot-id="d65891ce-568b-4efd-ab57-180717dd30c8"></span>
                 <script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>
         </div>
