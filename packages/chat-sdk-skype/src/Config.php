@@ -66,12 +66,10 @@ final class Config
     public function set($option, $value)
     {
         $name = '_' . $option;
-
         $r = new \ReflectionClass('\\' . __CLASS__);
         try {
             $r->getProperty($name);
             $this->$name = $value;
-
             return true;
         } catch (\ReflectionException $e) {
             return false;

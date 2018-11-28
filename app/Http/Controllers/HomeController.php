@@ -18,13 +18,13 @@ class HomeController extends Controller
     function send(Request $request)
     {
         $mess = $request->mess;
-        $conversation = '2ad454dsa';
+        $conversation = '29:2ad454dsa';
         $client = new Client([
             'clientId' => '0fcda35d-d319-4e2d-9139-3432bab9fd95',
             'clientSecret' => 'ialhDNYW121%]qfuRHH18~]',
         ]);
         $api = $client->authorize()->api('conversation');   // Skype\Api\Conversation
-        $result = $api->CreateActivity();
+        $result = $api->CreateActivity($mess);
         dd($result);
         return redirect('/');
     }

@@ -4,10 +4,24 @@ namespace Skype\Api;
 
 class Conversation extends BaseApi implements ApiInterface
 {
-    public function CreateActivity()
+    public function CreateActivity($text)
     {
-        $url = '/v3/conversations/';
-        return $this->request('POST',$url);
+        $json = [
+            'bot' => ["id" => "0fcda35d-d319-4e2d-9139-3432bab9fd95","name"=>"Chat_Aris_demo"],
+            'isGroup' => false,
+            'member' => [],
+            'topicName' => 'New Alert!',
+            'activity' => [ "type" => "message", "text" => $text]
+        ];
+        if (!empty($suggestedActions)) {
+            $json['suggestedActions']['actions'] = $suggestedActions;
+        }
+        $url = '/v3/conversations';
+        $result = $this->request('POST',$url , [
+            'json' => $json
+        ]);
+        dd($result);
+        return $result;
     }
     /**
      * Sends an activity message

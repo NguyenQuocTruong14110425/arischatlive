@@ -167,7 +167,6 @@ class CommandFactory
         $baseClasses = [
             'Skype\Api\Conversation'
         ];
-
         return array_merge($baseClasses, $classes);
     }
 

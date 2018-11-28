@@ -59,7 +59,6 @@ abstract class BaseApi
      */
     protected function log($message)
     {
-
         if ($this->logger) {
             $this->logger->info($message);
         }
