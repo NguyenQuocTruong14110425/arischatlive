@@ -71,7 +71,7 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="flex-center position-ref full-height row">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -86,7 +86,7 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content col-12">
                 <div class="title m-b-md">
                     Laravel
                 </div>
@@ -109,6 +109,9 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+                <div class="col-12">
+                    <iframe src='https://webchat.botframework.com/embed/chat-bot-aris-demo?s=xjdWo2dp3KM.cwA.evA.t6b4Bior5vI1XhHundA-fXWM2thvETeoVf6W2UltHE0'  style='min-width: 400px; width: 100%; min-height: 500px;'></iframe>
+                </div>
                 <span class="skype-button bubble " data-bot-id="d65891ce-568b-4efd-ab57-180717dd30c8"></span>
                 <script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>
         </div>
