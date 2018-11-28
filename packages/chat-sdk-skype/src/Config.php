@@ -1,60 +1,99 @@
 <?php
 
-namespace SkypeSDK;
+namespace Skype;
 
-class Config
+final class Config
 {
-    private $appId;
-    private $appSecret;
-    private $authEndpoint = 'https://login.microsoftonline.com/common/oauth2/v2.0/token';
-    private $apiEndpoint = 'https://apis.skype.com';
-    private $openIdEndpoint = 'https://api.aps.skype.com';
+    /**
+     * @var Client id
+     */
+    private $_clientId;
+    /**
+     * @var Client secret
+     */
+    private $_clientSecret;
+    /**
+     * @var Auth uri
+     */
+    private $_authUri = 'https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token';
+    /**
+     * @var Base uri
+     */
+    private $_baseUri = 'https://smba.trafficmanager.net/apis';
+    /**
+     * @var Http errors
+     */
+    private $_httpErrors = false;
+    /**
+     * @var Token storage file path
+     */
+    private $_fileTokenStoragePath;
 
     /**
-     * Config constructor.
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $authEndpoint
-     * @param string $apiEndpoint
-     * @param string $openIdEndpoint
+      * @var Token storage interface
+      */
+    private $_tokenStorageClass;
+
+    /**
+     * @var Token storage service
      */
-    public function  __construct($appId, $appSecret, $apiEndpoint = null, $authEndpoint = null, $openIdEndpoint = null)
+    private $_tokenStorageService;
+
+    /**
+     * Constructor
+     *
+     * @param  array          $data Array of parameters
+     * @throws SkypeException Unknown property
+     */
+    public function __construct(array $data = [])
     {
-        $this->appId = $appId;
-        $this->appSecret = $appSecret;
-        if ($authEndpoint) {
-            $this->authEndpoint = $authEndpoint;
+        foreach ($data as $k => $v) {
+            $result = $this->set($k, $v);
+            if (!$result) {
+                throw new SkypeException('Property [' . $k . '] is unknown or can not be set.');
+            }
         }
-        if ($apiEndpoint) {
-            $this->apiEndpoint = $apiEndpoint;
+    }
+
+    /**
+     * Set option
+     *
+     * @param  string  $key   Option name
+     * @param  mixed   $value Option value
+     * @access  public
+     * @return boolean
+     */
+    public function set($option, $value)
+    {
+        $name = '_' . $option;
+
+        $r = new \ReflectionClass('\\' . __CLASS__);
+        try {
+            $r->getProperty($name);
+            $this->$name = $value;
+
+            return true;
+        } catch (\ReflectionException $e) {
+            return false;
         }
-        if ($openIdEndpoint) {
-            $this->openIdEndpoint = $openIdEndpoint;
+    }
+
+    /**
+     * Get option
+     *
+     * @param  string         $option Option name
+     * @access  public
+     * @return mixed
+     * @throws SkypeException Wrong property
+     */
+    public function get($option)
+    {
+        $name = '_' . $option;
+
+        if (!property_exists('Skype\Config', $name)) {
+            throw new SkypeException('Wrong property name requested.');
         }
-    }
 
-    public function getAppId()
-    {
-        return $this->appId;
-    }
-
-    public function getAppSecret()
-    {
-        return $this->appSecret;
-    }
-
-    public function getAuthEndpoint()
-    {
-        return $this->authEndpoint;
-    }
-
-    public function getApiEndpoint()
-    {
-        return $this->apiEndpoint;
-    }
-
-    public function getOpenIdEndpoint()
-    {
-        return $this->openIdEndpoint;
+        return $this->$name;
     }
 }
