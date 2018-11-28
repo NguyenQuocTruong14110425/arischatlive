@@ -9,8 +9,8 @@ class HomeController extends Controller
     function index()
     {
         $client = new Client([
-            'clientId' => '0fcda35d-d319-4e2d-9139-3432bab9fd95',
-            'clientSecret' => 'ialhDNYW121%]qfuRHH18~]',
+            'clientId' => '0e643480-8951-4eb5-a4d0-1bdcc83aad5f',
+            'clientSecret' => 'mrEQW77{fbmcvVAFY566$((',
         ]);
         $client->auth();
         return view('welcome');

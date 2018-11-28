@@ -9,7 +9,7 @@ class Conversation extends BaseApi implements ApiInterface
         $json = [
             'bot' => ["id" => "0fcda35d-d319-4e2d-9139-3432bab9fd95","name"=>"Chat_Aris_demo"],
             'isGroup' => false,
-            'member' => [],
+            'member' => [["id" => "0fcda35d-d319-4e2d-9139-3432bab9fd95","name"=>"Chat_Aris_demo"]],
             'topicName' => 'New Alert!',
             'activity' => [ "type" => "message", "text" => $text]
         ];

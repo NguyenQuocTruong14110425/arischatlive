@@ -108,14 +108,6 @@
 
                     </div>
                 </div>
-                <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-                <script>
-                    window.WebChat.renderWebChat({
-                        directLine: window.WebChat.createDirectLine({ token: 'xjdWo2dp3KM.cwA.evA.t6b4Bior5vI1XhHundA-fXWM2thvETeoVf6W2UltHE0' })
-                    }, document.getElementById('webchat'));
-                </script>
-                <span class="skype-button bubble " data-bot-id="d65891ce-568b-4efd-ab57-180717dd30c8"></span>
-                <script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>
         </div>
     </body>
 </html>
