@@ -8,11 +8,11 @@ class HomeController extends Controller
 {
     function index()
     {
-        $client = new Client([
-            'clientId' => '0e643480-8951-4eb5-a4d0-1bdcc83aad5f',
-            'clientSecret' => 'mrEQW77{fbmcvVAFY566$((',
-        ]);
-        $client->auth();
+//        $client = new Client([
+//            'clientId' => '0e643480-8951-4eb5-a4d0-1bdcc83aad5f',
+//            'clientSecret' => 'mrEQW77{fbmcvVAFY566$((',
+//        ]);
+//        $client->auth();
         return view('welcome');
     }
     function send(Request $request)
@@ -24,7 +24,7 @@ class HomeController extends Controller
             'clientSecret' => 'ialhDNYW121%]qfuRHH18~]',
         ]);
         $api = $client->authorize()->api('conversation');   // Skype\Api\Conversation
-        $result = $api->CreateActivity($mess);
+        $result = $api->activity($mess);
         dd($result);
         return redirect('/');
     }

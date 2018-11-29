@@ -15,11 +15,13 @@ final class Config
     /**
      * @var Auth uri
      */
-    private $_authUri = 'https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token';
+//    private $_authUri = 'https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token';
+    private $_authUri = 'https://directline.botframework.com/v3/directline/tokens/generate';
     /**
      * @var Base uri
      */
-    private $_baseUri = 'https://smba.trafficmanager.net/apis';
+//    private $_baseUri = 'https://smba.trafficmanager.net/apis';
+    private $_baseUri = 'https://directline.botframework.com';
     /**
      * @var Http errors
      */

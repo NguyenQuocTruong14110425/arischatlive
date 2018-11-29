@@ -34,22 +34,30 @@ abstract class BaseApi
      */
     protected function request($method, $uri = null, array $options = [])
     {
-        if (null !== $this->token) {
-            $options = array_merge($options, [
-                'headers' => [
-                    'Authorization' => sprintf('Bearer %s', $this->token),
-                    'Content-Type'=> 'application/json'
-                ]
-            ]);
-        }
-        $this->log(
-            sprintf(
-                'Uri: %s, Method: %s, Options: %s',
-                $uri,
-                $method,
-                \GuzzleHttp\json_encode($options)
-            )
-        );
+        $token = 'H-igKWAqye4.cwA.rWw.ZSKefdh2Db-4AS6a6FCWR50Qp56mVF4tCqUzWP7B-oM';
+//        if (null !== $this->token) {
+//            $options = array_merge($options, [
+//                'headers' => [
+//                    'Authorization' => sprintf('Bearer %s', $this->token),
+//                    'Content-Type'=> 'application/json'
+//                ]
+//            ]);
+//        }
+        $options = array_merge($options, [
+            'headers' => [
+                'Authorization' => sprintf('Bearer %s', $token),
+                'Content-Type'=> 'application/json',
+//                'Content-Length' => strlen($uri)
+            ]
+        ]);
+//        $this->log(
+//            sprintf(
+//                'Uri: %s, Method: %s, Options: %s',
+//                $uri,
+//                $method,
+//                \GuzzleHttp\json_encode($options)
+//            )
+//        );
         $response = $this->client->request($method, $uri, $options);
         return $response;
     }

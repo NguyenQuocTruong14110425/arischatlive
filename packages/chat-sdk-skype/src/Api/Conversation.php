@@ -6,21 +6,9 @@ class Conversation extends BaseApi implements ApiInterface
 {
     public function CreateActivity($text)
     {
-        $json = [
-            'bot' => ["id" => "0fcda35d-d319-4e2d-9139-3432bab9fd95","name"=>"Chat_Aris_demo"],
-            'isGroup' => false,
-            'member' => [["id" => "0fcda35d-d319-4e2d-9139-3432bab9fd95","name"=>"Chat_Aris_demo"]],
-            'topicName' => 'New Alert!',
-            'activity' => [ "type" => "message", "text" => $text]
-        ];
-        if (!empty($suggestedActions)) {
-            $json['suggestedActions']['actions'] = $suggestedActions;
-        }
-        $url = '/v3/conversations';
-        $result = $this->request('POST',$url , [
-            'json' => $json
-        ]);
-        dd($result);
+
+        $url = '/v3/directline/conversations';
+        $result = $this->request('POST',$url);
         return $result;
     }
     /**
@@ -31,18 +19,21 @@ class Conversation extends BaseApi implements ApiInterface
      * @param array $suggestedActions
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function activity($target, $text, $suggestedActions = [])
+    public function activity($text, $suggestedActions = [])
     {
+        $target = '20Pj8rFoZElCeI8ugIjDbF';
         $json = [
-            'type' => 'message/text',
-            'text' => $text,
+            'type' => 'message',
+            'from' => [
+                'id'   =>  "0fcda35d-d319-4e2d-9139-3432bab9fd95",
+            ],
+            'conversation' => [
+                'id'   => $target,
+            ],
+            'text' => "Hello",
         ];
-
-        if (!empty($suggestedActions)) {
-            $json['suggestedActions']['actions'] = $suggestedActions;
-        }
-        $url = '/v3/conversations/' . $target . '/activities';
-        return $this->request('POST',$url , [
+        $url = '/v3/directline/conversations/' . $target . '/activities';
+        return $this->request('GET',$url , [
             'json' => $json
         ]);
     }

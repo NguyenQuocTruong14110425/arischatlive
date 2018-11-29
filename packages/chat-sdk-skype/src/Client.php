@@ -109,7 +109,6 @@ class Client
             $json['expires_in'] = $now->getTimestamp() + $json['expires_in'];
         }
         $this->tokenStorage->write($json);
-
     }
 
     /**
