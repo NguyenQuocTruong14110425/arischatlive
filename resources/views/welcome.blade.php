@@ -124,7 +124,7 @@
         var watermark;
         var referenceGrammarId;
         function CreateConvention() {
-            var urlPost = "{{URL::to('/api/create')}}";
+            var urlPost = "{{secure_url('/api/create')}}";
             $.ajax({
                 url:urlPost,
                 type: 'GET'})
@@ -141,7 +141,7 @@
                 })
         }
         function ReconnectConvention() {
-            var urlPost = "{{URL::to('/api/reconnect')}}";
+            var urlPost = "{{secure_url('/api/reconnect')}}";
             var data = {
                 watermark:'-&t=H-igKWAqye4.dAA.MwBiAFQAZABEADcAZgBLAFEAVwBPAEUAcABHAHEATQBsADUAaQBOAGQAVAA.EOTRxcOH1AE.NU1anGucKno.8kXbr_HgGvH1JdUkWlTUnn36ToNbHklFvcmtArSvqAs',
                 conversationId: '3bTdD7fKQWOEpGqMl5iNdT'
@@ -188,7 +188,7 @@
         }
         function sendMessage() {
             var message = $('#mess').val();
-            var urlPost = "{{URL::to('/api/send')}}";
+            var urlPost = "{{secure_url('/api/send')}}";
             var data = {
                 watermark:watermark,
                 conversationId: conversationsID,
@@ -213,7 +213,7 @@
                 })
         }
         function CloseSocket() {
-            var urlPost = "{{URL::to('/api/close')}}";
+            var urlPost = "{{secure_url('/api/close')}}";
             var data = {
                 conversationId: conversationsID,
             };
