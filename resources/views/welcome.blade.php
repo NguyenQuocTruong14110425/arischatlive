@@ -76,6 +76,7 @@
         </style>
     </head>
     <body class="container">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
         <div class="row">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -90,7 +91,7 @@
                     @endauth
                 </div>
             @endif
-
+            <a href="/reconnect" class="btn btn-success">Reconnect</a>
             <div class="col-12">
                 <form method="post" action="/send">
                     @csrf
@@ -109,5 +110,132 @@
                     </div>
                 </div>
         </div>
+        <button onclick="CreateConvention()" class="btn-info btn">Create convertion</button>
+        <button onclick="ReconnectConvention()" class="btn-info btn">Reconnect convertion</button>
+        <button onclick="OpenSocket()" class="btn-success btn">Open message</button>
+        <button onclick="CloseSocket()" class="btn-danger btn">Close message</button>
+        <button onclick="sendMessage()" class="btn-success btn">send message</button>
+
+        <div id="error"></div>
+    <script>
+        var socket;
+        var conversationsID;
+        var streamUrl;
+        var watermark;
+        var referenceGrammarId;
+        function CreateConvention() {
+            var urlPost = "{{URL::to('/api/create')}}";
+            $.ajax({
+                url:urlPost,
+                type: 'GET'})
+                .done(function( data ){
+                    conversationsID= data.conversationId;
+                    streamUrl = data.streamUrl;
+                    referenceGrammarId = data.referenceGrammarId;
+                    var splitstreamUrl = streamUrl.split("stream?watermark=");
+                    watermark = splitstreamUrl[1];
+                })
+                .fail(function(err) {
+                    document.getElementById("error").innerHTML  = err.responseText;
+                    console.log(err)
+                })
+        }
+        function ReconnectConvention() {
+            var urlPost = "{{URL::to('/api/reconnect')}}";
+            var data = {
+                watermark:'-&t=H-igKWAqye4.dAA.MwBiAFQAZABEADcAZgBLAFEAVwBPAEUAcABHAHEATQBsADUAaQBOAGQAVAA.EOTRxcOH1AE.NU1anGucKno.8kXbr_HgGvH1JdUkWlTUnn36ToNbHklFvcmtArSvqAs',
+                conversationId: '3bTdD7fKQWOEpGqMl5iNdT'
+            };
+            var CSRF_TOKEN =  $('meta[name="csrf-token"]').attr('content');
+            console.log(CSRF_TOKEN);
+            $.ajax({
+                url:urlPost,
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                headers:
+                    { 'X-CSRF-TOKEN': CSRF_TOKEN}
+                })
+                .done(function( data ){
+                    console.log(data);
+                    conversationsID= data.conversationId;
+                    streamUrl = data.streamUrl;
+                    referenceGrammarId = data.referenceGrammarId;
+                })
+                .fail(function(err) {
+                    document.getElementById("error").innerHTML  = err.responseText;
+                    console.log(err)
+                })
+        }
+        function OpenSocket() {
+            socket = new WebSocket(streamUrl);
+
+            socket.onopen = function(event) {
+                console.log("WebSocket is open now.");
+            };
+
+            socket.onmessage = function (event) {
+                console.log(event.data);
+            }
+    
+            socket.onerror = function(event) {
+                console.error("WebSocket error observed:", event);
+            };
+
+            socket.onclose = function(event) {
+                console.log("WebSocket is closed now.");
+            };
+        }
+        function sendMessage() {
+            var message = $('#mess').val();
+            var urlPost = "{{URL::to('/api/send')}}";
+            var data = {
+                watermark:watermark,
+                conversationId: conversationsID,
+                message: message
+            };
+            console.log(data);
+            var CSRF_TOKEN =  $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url:urlPost,
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                headers:
+                    { 'X-CSRF-TOKEN': CSRF_TOKEN}
+            })
+                .done(function( data ){
+                    console.log(data);
+                })
+                .fail(function(err) {
+                    document.getElementById("error").innerHTML  = err.responseText;
+                    console.log(err)
+                })
+        }
+        function CloseSocket() {
+            var urlPost = "{{URL::to('/api/close')}}";
+            var data = {
+                conversationId: conversationsID,
+            };
+            console.log(data);
+            var CSRF_TOKEN =  $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url:urlPost,
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                headers:
+                    { 'X-CSRF-TOKEN': CSRF_TOKEN}
+            })
+                .done(function( data ){
+                    console.log(data);
+                })
+                .fail(function(err) {
+                    document.getElementById("error").innerHTML  = err.responseText;
+                    console.log(err)
+                })
+            socket.close();
+        }
+    </script>
     </body>
 </html>

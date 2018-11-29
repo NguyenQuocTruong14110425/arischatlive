@@ -94,20 +94,14 @@ class Client
     public function auth()
     {
         $this->handlerStack->remove('reAuth');
-        $res = $this->client->post($this->config->get('authUri'), [
-            'form_params' => [
-                'client_id' => $this->config->get('clientId'),
-                'client_secret' => $this->config->get('clientSecret'),
-                'grant_type' => 'client_credentials',
-                'scope' => 'https://graph.microsoft.com/.default'
+        $options =[
+            'headers' => [
+                'Authorization' => sprintf('Bearer %s', $this->config->get('token')),
+                'Content-Type'=> 'application/json'
             ]
-        ]);
+        ];
+        $res = $this->client->request('POST',$this->config->get('authUri'),$options);
         $json = \GuzzleHttp\json_decode($res->getBody(), true);
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        if(isset($json['expires_in']))
-        {
-            $json['expires_in'] = $now->getTimestamp() + $json['expires_in'];
-        }
         $this->tokenStorage->write($json);
     }
 
@@ -119,9 +113,8 @@ class Client
         if ($token) {
             $this->token = $token;
         } else {
-            $this->token = $this->tokenStorage->read();
+            $this->token = $this->config->get('token');
         }
-
         return $this;
     }
 

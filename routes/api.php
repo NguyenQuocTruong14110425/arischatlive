@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/create', 'HomeController@CreateConersation');
+Route::POST('/reconnect', 'HomeController@reconnect');
+Route::post('/send', 'HomeController@send');
+Route::post('/close', 'HomeController@close');
+

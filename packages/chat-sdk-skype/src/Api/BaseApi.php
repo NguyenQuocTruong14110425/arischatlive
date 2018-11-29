@@ -47,7 +47,6 @@ abstract class BaseApi
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $token),
                 'Content-Type'=> 'application/json',
-//                'Content-Length' => strlen($uri)
             ]
         ]);
 //        $this->log(

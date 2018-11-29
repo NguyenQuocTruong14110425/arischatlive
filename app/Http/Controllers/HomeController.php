@@ -3,29 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\Resource;
 use Skype\Client;
 class HomeController extends Controller
 {
     function index()
     {
-//        $client = new Client([
-//            'clientId' => '0e643480-8951-4eb5-a4d0-1bdcc83aad5f',
-//            'clientSecret' => 'mrEQW77{fbmcvVAFY566$((',
-//        ]);
-//        $client->auth();
         return view('welcome');
+    }
+    function CreateConersation()
+    {
+        $client = new Client();
+        $api = $client->authorize()->api('conversation');
+        $result = $api->CreateConersation();
+        $json = \GuzzleHttp\json_decode($result->getBody(), true);
+        return response()->json($json);
+    }
+    function reconnect(Request $request)
+    {
+        $watermark = $request->watermark;
+        $conversationId = $request->conversationId;
+        $client = new Client();
+        $api = $client->authorize()->api('conversation');
+        $result = $api->Reconnect($watermark,$conversationId);
+        $json = \GuzzleHttp\json_decode($result->getBody(), true);
+        return response()->json($json);
     }
     function send(Request $request)
     {
-        $mess = $request->mess;
-        $conversation = '29:2ad454dsa';
-        $client = new Client([
-            'clientId' => '0fcda35d-d319-4e2d-9139-3432bab9fd95',
-            'clientSecret' => 'ialhDNYW121%]qfuRHH18~]',
-        ]);
-        $api = $client->authorize()->api('conversation');   // Skype\Api\Conversation
-        $result = $api->activity($mess);
-        dd($result);
-        return redirect('/');
+        $message = $request->message;
+        $conversationId =  $request->conversationId;
+        $watermark =  $request->watermark;
+        $client = new Client();
+        $api = $client->authorize()->api('conversation');
+        $result = $api->activity($message,$conversationId,$watermark);
+        $json = \GuzzleHttp\json_decode($result->getBody(), true);
+        return response()->json($json);
+    }
+    function close(Request $request)
+    {
+        $conversationId =  $request->conversationId;
+        $client = new Client();
+        $api = $client->authorize()->api('conversation');
+        $result = $api->closeActivity($conversationId);
+        $json = \GuzzleHttp\json_decode($result->getBody(), true);
+        return response()->json($json);
+
     }
 }

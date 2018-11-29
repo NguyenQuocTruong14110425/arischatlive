@@ -22,6 +22,8 @@ final class Config
      */
 //    private $_baseUri = 'https://smba.trafficmanager.net/apis';
     private $_baseUri = 'https://directline.botframework.com';
+
+    private $_token = 'H-igKWAqye4.cwA.rWw.ZSKefdh2Db-4AS6a6FCWR50Qp56mVF4tCqUzWP7B-oM';
     /**
      * @var Http errors
      */
