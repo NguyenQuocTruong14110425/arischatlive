@@ -46,6 +46,9 @@ abstract class BaseApi
         $options = array_merge($options, [
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $token),
+                'Access-Control-Allow-Methods'=> 'POST, GET, OPTIONS, PUT, DELETE',
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Headers'=> 'Content-Type, X-Auth-Token, Origin',
                 'Content-Type'=> 'application/json',
             ]
         ]);
