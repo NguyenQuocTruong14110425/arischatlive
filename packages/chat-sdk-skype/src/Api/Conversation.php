@@ -39,8 +39,8 @@ class Conversation extends BaseApi implements ApiInterface
             'type' => 'message',
             'from' => [
                 'id'   =>  "live:truong.nq_2",
+                'name'  => "Nguyen Quoc Truong"
             ],
-            "channelId" => 'directline',
             'text' => $text
         ];
 
@@ -50,6 +50,33 @@ class Conversation extends BaseApi implements ApiInterface
         ]);
     }
 
+    public function Botactivity($text, $conversation,$watermark)
+    {
+        $target = $conversation;
+        $json = [
+            'type' => 'message',
+            'from' => [
+                'id'   =>  "chat-bot-aris@H-igKWAqye4",
+                'name'  => "chat-bot-aris"
+            ],
+            'recipient' => [
+                'id'   => "live:truong.nq_2",
+                'name'  => "Nguyen Quoc Truong"
+            ],
+            'text' => $text
+        ];
+
+        $url = '/v3/directline/conversations/' . $target . '/activities?watermark=' . $watermark;
+        return $this->request('POST',$url , [
+            'json' => $json
+        ]);
+    }
+
+    public function receiveActivity($conversation,$watermark)
+    {
+        $url = '/v3/directline/conversations/' . $conversation . '/activities?watermark=' .$watermark;
+        return $this->request('GET',$url);
+    }
     public function closeActivity($conversation)
     {
         $target = $conversation;
@@ -65,4 +92,5 @@ class Conversation extends BaseApi implements ApiInterface
             'json' => $json
         ]);
     }
+
 }

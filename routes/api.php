@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/create', 'HomeController@CreateConersation');
 Route::POST('/reconnect', 'HomeController@reconnect');
 Route::post('/send', 'HomeController@send');
+Route::post('/receive', 'HomeController@receive');
 Route::post('/close', 'HomeController@close');
 

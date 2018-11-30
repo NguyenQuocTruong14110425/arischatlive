@@ -115,6 +115,7 @@
         <button onclick="OpenSocket()" class="btn-success btn">Open message</button>
         <button onclick="CloseSocket()" class="btn-danger btn">Close message</button>
         <button onclick="sendMessage()" class="btn-success btn">send message</button>
+        <button onclick="ReceiveMessage()" class="btn-info btn">receive message</button>
 
         <div id="error"></div>
     <script>
@@ -175,6 +176,7 @@
             };
 
             socket.onmessage = function (event) {
+                console.log("listening");
                 console.log(event.data);
             }
     
@@ -204,6 +206,30 @@
                 headers:
                     { 'X-CSRF-TOKEN': CSRF_TOKEN}
             })
+                .done(function( data ){
+                    console.log(data);
+                })
+                .fail(function(err) {
+                    document.getElementById("error").innerHTML  = err.responseText;
+                    console.log(err)
+                })
+        }
+        function ReceiveMessage() {
+            var urlPost = "{{secure_url('/api/receive')}}";
+            var data = {
+                watermark:watermark,
+                conversationId: conversationsID,
+            };
+            console.log(data);
+            var CSRF_TOKEN =  $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url:urlPost,
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                headers:
+                    { 'X-CSRF-TOKEN': CSRF_TOKEN}
+                })
                 .done(function( data ){
                     console.log(data);
                 })

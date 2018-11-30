@@ -37,6 +37,20 @@ class HomeController extends Controller
         $client = new Client();
         $api = $client->authorize()->api('conversation');
         $result = $api->activity($message,$conversationId,$watermark);
+
+        $messageBot = "message from bot Hello";
+        $api->Botactivity($messageBot,$conversationId,$watermark);
+
+        $json = \GuzzleHttp\json_decode($result->getBody(), true);
+        return response()->json($json);
+    }
+    function receive(Request $request)
+    {
+        $conversationId =  $request->conversationId;
+        $watermark =  $request->watermark;
+        $client = new Client();
+        $api = $client->authorize()->api('conversation');
+        $result = $api->receiveActivity($conversationId,$watermark);
         $json = \GuzzleHttp\json_decode($result->getBody(), true);
         return response()->json($json);
     }
