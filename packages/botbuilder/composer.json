@@ -1,5 +1,5 @@
 {
-    "name": "truong.nq/chat-sdk-skype",
+    "name": "truong.nq/botbuilder",
     "authors": [
         {
             "name": "Nguyen Quoc Truong",
@@ -7,6 +7,6 @@
         }
     ],
     "require": {
-
+        "guzzlehttp/guzzle": "~6.0"
     }
 }

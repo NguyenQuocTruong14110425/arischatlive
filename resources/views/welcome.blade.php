@@ -116,8 +116,38 @@
         <button onclick="CloseSocket()" class="btn-danger btn">Close message</button>
         <button onclick="sendMessage()" class="btn-success btn">send message</button>
         <button onclick="ReceiveMessage()" class="btn-info btn">receive message</button>
+        <button onclick="checkLogin()" class="btn-info btn">Check Login</button>
 
         <div id="error"></div>
+    <script src="https://zjs.zdn.vn/zalo/sdk.js"></script>
+    <script>
+        Zalo.init({
+                version: '2.0',
+                appId: '1909228162873375583',
+                redirectUrl: 'https://chatbotsdk.herokuapp.com/'
+            }
+        );
+        function checkLogin() {
+            Zalo.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    Zalo.api('/me',
+                        'GET',
+                        {
+                            fields: 'id,name'
+                        },
+                        function (response) {
+                            console.log(response);
+                        }
+                    );
+                } else {
+                    Zalo.login(curentState, "get_profile,get_friends,send_message,post_feed");
+                }
+            });
+        }
+    </script>
+    {{--<span class="skype-button bubble " data-contact-id="live:truong.nq_2"></span>--}}
+    {{--<span class="skype-chat" data-color-message="#82c0ff"></span>--}}
+    {{--<script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>--}}
     <script>
         var socket;
         var conversationsID;
@@ -177,6 +207,7 @@
 
             socket.onmessage = function (event) {
                 console.log("listening");
+                console.log(event);
                 console.log(event.data);
             }
     

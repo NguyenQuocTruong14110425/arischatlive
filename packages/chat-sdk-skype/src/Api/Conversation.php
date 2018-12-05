@@ -41,6 +41,8 @@ class Conversation extends BaseApi implements ApiInterface
                 'id'   =>  "live:truong.nq_2",
                 'name'  => "Nguyen Quoc Truong"
             ],
+            'channelId' => 'skype',
+            "abc" => "hello",
             'text' => $text
         ];
 
@@ -59,10 +61,7 @@ class Conversation extends BaseApi implements ApiInterface
                 'id'   =>  "chat-bot-aris@H-igKWAqye4",
                 'name'  => "chat-bot-aris"
             ],
-            'recipient' => [
-                'id'   => "live:truong.nq_2",
-                'name'  => "Nguyen Quoc Truong"
-            ],
+            'channelId' => 'skype',
             'text' => $text
         ];
 
