@@ -43,8 +43,17 @@ class HomeController extends Controller
         if ($accessToken != null) {
             $expires = $accessToken->getExpiresAt(); // get expires time
         }
-        dd($accessToken);
+        $zalo->setDefaultAccessToken($accessToken);
         return view('home');
+    }
+    function getProfile()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $params = [];
+        $response = $zalo->get(ZaloEndpoint::API_GRAPH_ME, $params, $accessToken);
+        $result = $response->getDecodedBody(); // result
+        dd($result);
     }
     function SendMessage(Request $request)
     {

@@ -12,4 +12,5 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@home');
+Route::get('/get-profile', 'HomeController@getProfile');
 Route::POST('/send', 'HomeController@SendMessage');

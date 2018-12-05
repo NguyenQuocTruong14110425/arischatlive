@@ -78,24 +78,7 @@
 <body class="container">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="row">
-    <a href="/reconnect" class="btn btn-success">Reconnect</a>
-    <div class="col-12">
-        <form method="post" action="/send">
-            @csrf
-            <div class="form-group">
-                <label>Message</label>
-                <input class="form-control" type="text" value="hello" name="mess" id="mess"/>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success">send</button>
-            </div>
-        </form>
-    </div>
-    <div class="col-12">
-        <div id = "webchat">
-
-        </div>
-    </div>
+    <a  href="{{secure_url('/get-profile')}}" class="btn btn-success">Get Profile</a>
 </div>
 </body>
 </html>

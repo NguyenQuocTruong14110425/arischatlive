@@ -30,7 +30,10 @@ class ZaloRedirectLoginHelper
      * @var OAuth2Client The OAuth 2.0 client service.
      */
     protected $oAuth2Client;
-
+    /**
+     * @var
+     */
+    protected $token;
     /**
      * @var UrlDetectionInterface The URL detection handler.
      */
@@ -150,6 +153,7 @@ class ZaloRedirectLoginHelper
 
         return $this->oAuth2Client->getAccessTokenFromCode($code, $redirectUrl);
     }
+
 
     /**
      * Return the code.
