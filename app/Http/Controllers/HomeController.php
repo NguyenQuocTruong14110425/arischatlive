@@ -45,7 +45,7 @@ class HomeController extends Controller
         if ($accessToken != null) {
             $expires = $accessToken->getExpiresAt(); // get expires time
         }
-        $zalo->setDefaultAccessToken($accessToken['access_token']);
+        $zalo->setDefaultAccessToken($accessToken->getValue());
         $accessTokens = $zalo->getDefaultAccessToken();
         print_r($accessTokens);
         return view('home');
