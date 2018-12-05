@@ -46,6 +46,8 @@ class HomeController extends Controller
             $expires = $accessToken->getExpiresAt(); // get expires time
         }
         $zalo->setDefaultAccessToken($accessToken);
+        $accessToken = $zalo->getDefaultAccessToken();
+        print_r($accessToken);
         return view('home');
     }
     function getProfile()
@@ -57,6 +59,7 @@ class HomeController extends Controller
         $response = $zalo->get(ZaloEndpoint::API_GRAPH_ME, $params, $accessToken);
         $result = $response->getDecodedBody(); // result
         dd($result);
+        return view('home');
     }
     function SendMessage(Request $request)
     {
