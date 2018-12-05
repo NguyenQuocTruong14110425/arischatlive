@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Response;
 use Skype\Client;
 use BotBuilder\Client as Bot;
 
+use Zalo\ChatBot;
 use Zalo\Zalo;
 use Zalo\ZaloConfig;
 use Zalo\ZaloEndpoint;
 
 class HomeController extends Controller
 {
+
+    private $callBackUrl = "http://40a007a6.ngrok.io/arischatbotsdk/home";
     function getAuthOptions()
     {
         $authOptions = [
@@ -24,14 +28,18 @@ class HomeController extends Controller
         ];
         return $authOptions;
     }
+    function init()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        return $zalo;
+    }
     function index()
     {
 //        $authOptions = $this->getAuthOptions();
 //        $client = (new Bot($authOptions))->auth();
-        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
-        $helper = $zalo -> getRedirectLoginHelper();
-        $callBackUrl = "https://chatbotsdk.herokuapp.com/home";
-        $loginUrl = $helper->getLoginUrl($callBackUrl); // This is login url
+        $this->zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $helper = $this->zalo -> getRedirectLoginHelper();
+        $loginUrl = $helper->getLoginUrl( $this->callBackUrl); // This is login url
         return view('index',['loginUrl'=>$loginUrl]);
     }
     function home()
@@ -39,28 +47,105 @@ class HomeController extends Controller
 
         $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
         $helper = $zalo -> getRedirectLoginHelper();
-        $callBackUrl = "https://chatbotsdk.herokuapp.com/home";
         $oauthCode = isset($_GET['code']) ? $_GET['code'] : "THIS NOT CALLBACK PAGE !!!"; // get oauthoauth code from url params
-        $accessToken = $helper->getAccessToken($callBackUrl); // get access token
+        $accessToken = $helper->getAccessToken($this->callBackUrl); // get access token
         if ($accessToken != null) {
             $expires = $accessToken->getExpiresAt(); // get expires time
         }
-        $zalo->setDefaultAccessToken($accessToken->getValue());
-        $accessTokens = $zalo->getDefaultAccessToken();
-        print_r($accessTokens);
+        $zalo->setDefaultAccessToken($accessToken);
         return view('home');
     }
     function getProfile()
     {
         $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
         $accessToken = $zalo->getDefaultAccessToken();
-        print_r($accessToken);
         $params = [];
         $response = $zalo->get(ZaloEndpoint::API_GRAPH_ME, $params, $accessToken);
         $result = $response->getDecodedBody(); // result
         dd($result);
         return view('home');
     }
+    function getListFriend()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $params = ['offset' => 0, 'limit' => 20, 'fields' => "id, name"];
+        $response = $zalo->get(ZaloEndpoint::API_GRAPH_FRIENDS, $params, $accessToken);
+        $result = $response->getDecodedBody(); // result
+        dd($result);
+        return view('home');
+    }
+    function getListFriendInvite()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $params = ['offset' => 0, 'limit' => 20, 'fields' => "id, name"];
+        $response = $zalo->get(ZaloEndpoint::API_GRAPH_INVITABLE_FRIENDS, $params, $accessToken);
+        $result = $response->getDecodedBody(); // result
+        dd($result);
+        return view('home');
+    }
+    function inviteAplication()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $params = ['message' => 'Sử dụng ứng dụng này đi! < Quốc Trường >', 'to' => '5022149697562506977'];
+        $response = $zalo->post(ZaloEndpoint::API_GRAPH_APP_REQUESTS, $params, $accessToken);
+        $result = $response->getDecodedBody(); // result
+        dd($result);
+        return view('home');
+    }
+    function getFlowers()
+    {
+//        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+//        $accessToken = $zalo->getDefaultAccessToken();
+//        $params = [];
+//        $response = $zalo->get(ZaloEndpoint::API_OA_GET_FOLLOWERS, $params);
+//        $result = $response->getDecodedBody(); // result
+        $chatBot = new ChatBot();
+        $data_message = 'Chào bạn';
+        $mess = mb_strtolower($data_message,'UTF-8');
+        $message_send = $chatBot->getMessage($mess);
+        dd($message_send);
+        return view('home');
+    }
+    function webhook(Request $request)
+    {
+
+        $data_id = $request->fromuid;
+        $data_message = $request->message;
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $chatBot = new ChatBot();
+        $mess = mb_strtolower($data_message,'UTF-8');
+        $message_send = $chatBot->getMessage($mess);
+        $data = array(
+            'uid' => $data_id, // user id
+            'message' => $message_send
+        );
+        $params = ['data' => $data];
+        if(isset($data_message))
+        {
+            $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);
+            $result = $response->getDecodedBody(); // result
+        }
+
+    }
+    function sendMessToFriend()
+    {
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $accessToken = $zalo->getDefaultAccessToken();
+        $data = array(
+            'uid' => 3958437030706763964, // user id
+            'message' => 'Chúc buổi chiều tốt lành!'
+        );
+        $params = ['data' => $data];
+        $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);
+        $result = $response->getDecodedBody(); // result
+        dd($result);
+        return view('home');
+    }
+
     function SendMessage(Request $request)
     {
 //        $arr_profile = [

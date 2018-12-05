@@ -13,4 +13,10 @@
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@home');
 Route::get('/get-profile', 'HomeController@getProfile');
+Route::get('/get-list-friend', 'HomeController@getListFriend');
+Route::get('/get-list-friend-invite', 'HomeController@getListFriendInvite');
+Route::get('/invite-aplication', 'HomeController@inviteAplication');
+Route::get('/get-flowers', 'HomeController@getFlowers');
+Route::get('/send-message', 'HomeController@sendMessToFriend');
+Route::get('/webhook', 'HomeController@webhook');
 Route::POST('/send', 'HomeController@SendMessage');

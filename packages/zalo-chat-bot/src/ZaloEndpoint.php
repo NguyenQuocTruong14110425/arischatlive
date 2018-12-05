@@ -53,7 +53,11 @@ class ZaloEndpoint {
      * @const 
      */
     const API_OA_SEND_FOLLOW_MSG = '/sendmessage/phone/invite';
-    
+    /**
+     *
+     */
+    const API_OA_GET_FOLLOWERS = '/getfollowers';
+
     /**
      * @const 
      */

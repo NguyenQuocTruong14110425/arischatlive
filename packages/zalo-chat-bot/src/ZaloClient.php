@@ -179,7 +179,6 @@ class ZaloClient {
         $returnResponse = new ZaloResponse(
                 $request, $rawResponse->getBody(), $rawResponse->getHttpResponseCode(), $rawResponse->getHeaders()
         );
-
         if ($returnResponse->isError()) {
             throw $returnResponse->getThrownException();
         }

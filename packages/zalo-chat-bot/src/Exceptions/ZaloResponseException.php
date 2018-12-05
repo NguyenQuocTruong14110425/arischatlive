@@ -7,14 +7,6 @@
 namespace Zalo\Exceptions;
 
 use Zalo\ZaloResponse;
-use Zalo\Exceptions\ZaloSDKException;
-use Zalo\Exceptions\ZaloAuthenticationException;
-use Zalo\Exceptions\ZaloAuthorizationException;
-use Zalo\Exceptions\ZaloClientException;
-use Zalo\Exceptions\ZaloServerException;
-use Zalo\Exceptions\ZaloOtherException;
-use Zalo\Exceptions\ZaloResponseException;
-
 /**
  * Class ZaloResponseException
  *
@@ -58,7 +50,6 @@ class ZaloResponseException extends ZaloSDKException {
 
         $code = isset($data['error']) ? $data['error'] : null;
         $message = isset($data['message']) ? $data['message'] : 'Unknown error from Graph.';
-
         switch ($code) {
             // Login status or token expired, revoked, or invalid
             case 100:

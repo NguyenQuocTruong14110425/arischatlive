@@ -9,6 +9,7 @@ namespace Zalo;
 use Zalo\Authentication\AccessToken;
 use Zalo\Authentication\OAuth2Client;
 use Zalo\Authentication\ZaloRedirectLoginHelper;
+use Zalo\FileUpload\FileTokenStorage;
 use Zalo\Url\UrlDetectionInterface;
 use Zalo\Url\ZaloUrlDetectionHandler;
 use Zalo\HttpClients\HttpClientsFactory;
@@ -17,6 +18,8 @@ use Zalo\ZaloApp;
 use Zalo\ZaloOA;
 use Zalo\ZaloClient;
 use Zalo\ZaloRequest;
+
+use GuzzleHttp;
 
 /**
  * Class Zalo
@@ -106,7 +109,15 @@ class Zalo
      * @var ZaloResponse|ZaloBatchResponse|null Stores the last request made to Graph.
      */
     protected $lastResponse;
-    
+
+    /**
+     * @var
+     */
+    protected $tokenStorage;
+    /**
+     * @var string
+     */
+    protected $fileTokenStoragePath = '/';
     /**
      * Instantiates a new Zalo super-class object.
      *
@@ -116,6 +127,7 @@ class Zalo
      */
     public function __construct(array $config = [])
     {
+        $this->fileTokenStoragePath = storage_path('token/.zalo');
         $config = array_merge([
             'app_id' => getenv(static::APP_ID_ENV_NAME),
             'app_secret' => getenv(static::APP_SECRET_ENV_NAME),
@@ -125,6 +137,7 @@ class Zalo
             'http_client_handler' => 'curl',
             'url_detection_handler' => null,
         ], $config);
+        $this->tokenStorage = new FileTokenStorage($this->fileTokenStoragePath);
         if (!$config['app_id']) {
             throw new ZaloSDKException('Required "app_id" key not supplied in config and could not find fallback environment variable "' . static::APP_ID_ENV_NAME . '"');
         }
@@ -208,7 +221,12 @@ class Zalo
      */
     public function getDefaultAccessToken()
     {
-        return $this->defaultAccessToken;
+        if(isset($this->defaultAccessToken))
+        {
+            return $this->defaultAccessToken;
+        }
+        $token = $this->tokenStorage->read('access_token');
+        return $token;
     }
     /**
      * Sets the default access token to use with requests.
@@ -225,6 +243,12 @@ class Zalo
         }
         if ($accessToken instanceof AccessToken) {
             $this->defaultAccessToken = $accessToken;
+            $arr_token = [
+              'access_token' =>   $accessToken->getValue(),
+                'expiresAt'  =>$accessToken->getExpiresAt()
+            ];
+            $json =  \GuzzleHttp\json_decode(\GuzzleHttp\json_encode($arr_token), true);
+            $this->tokenStorage->write($json);
             return;
         }
         throw new \InvalidArgumentException('The default access token must be of type "string" or Zalo\AccessToken');

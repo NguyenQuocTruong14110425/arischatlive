@@ -23,10 +23,10 @@ class ZaloConfig {
     const ZALO_APP_SECRET_KEY_CFG = "6VHEJ2Lzk3f5gl29xtR6";
     
     /** config your offical account id here */
-    const ZALO_OA_ID_CFG = "2491302944280861639";
+    const ZALO_OA_ID_CFG = "2526770453643396075";
     
     /** config your offical account secret key here */
-    const ZALO_OA_SECRET_KEY_CFG = "Tb418kOM4WJLQzwYGqqw";
+    const ZALO_OA_SECRET_KEY_CFG = "S6nRrQTsgHLOZCs5J9l6";
 
     /**
      * Get a singleton instance of the class

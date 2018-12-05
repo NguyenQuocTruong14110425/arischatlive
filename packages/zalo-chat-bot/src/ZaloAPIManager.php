@@ -44,6 +44,7 @@ class ZaloAPIManager {
             ZaloEndpoint::API_GRAPH_MESSAGE => Zalo::API_TYPE_GRAPH,
             ZaloEndpoint::API_GRAPH_POST_FEED => Zalo::API_TYPE_GRAPH,
             ZaloEndpoint::API_OA_SEND_FOLLOW_MSG => Zalo::API_TYPE_OA,
+            ZaloEndpoint::API_OA_GET_FOLLOWERS => Zalo::API_TYPE_OA,
             ZaloEndpoint::API_OA_GET_LIST_TAG => Zalo::API_TYPE_OA,
             ZaloEndpoint::API_OA_REMOVE_TAG => Zalo::API_TYPE_OA,
             ZaloEndpoint::API_OA_REMOVE_USER_FROM_TAG => Zalo::API_TYPE_OA,

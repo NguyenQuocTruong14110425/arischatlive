@@ -79,6 +79,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="row">
     <a  href="{{secure_url('/get-profile')}}" class="btn btn-success">Get Profile</a>
+    <a  href="{{secure_url('/get-list-friend')}}" class="btn btn-info">Get list friend</a>
+    <a  href="{{secure_url('/get-list-friend-invite')}}" class="btn btn-danger">Get list friend invite</a>
+    <a  href="{{secure_url('/invite-aplication')}}" class="btn btn-info">Invite aplication</a>
+    <a  href="{{secure_url('/get-flowers')}}" class="btn btn-danger">Get flower</a>
+    <a  href="{{secure_url('/send-message')}}" class="btn btn-success">send message</a>
 </div>
 </body>
 </html>
