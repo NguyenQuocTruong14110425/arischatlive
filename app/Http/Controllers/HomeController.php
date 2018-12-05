@@ -52,6 +52,7 @@ class HomeController extends Controller
     {
         $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
         $accessToken = $zalo->getDefaultAccessToken();
+        print_r($accessToken);
         $params = [];
         $response = $zalo->get(ZaloEndpoint::API_GRAPH_ME, $params, $accessToken);
         $result = $response->getDecodedBody(); // result
