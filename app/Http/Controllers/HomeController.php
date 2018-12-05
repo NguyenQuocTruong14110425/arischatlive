@@ -9,6 +9,8 @@ use BotBuilder\Client as Bot;
 
 use Zalo\Zalo;
 use Zalo\ZaloConfig;
+use Zalo\ZaloEndpoint;
+
 class HomeController extends Controller
 {
     function getAuthOptions()
