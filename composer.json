@@ -44,7 +44,8 @@
         "psr-4": {
             "App\\": "app/",
             "Skype\\": "packages/chat-sdk-skype/src",
-            "BotBuilder\\": "packages/botbuilder/src"
+            "BotBuilder\\": "packages/botbuilder/src",
+            "Zalo\\": "packages/zalo-chat-bot/src"
         },
         "classmap": [
             "database/seeds",

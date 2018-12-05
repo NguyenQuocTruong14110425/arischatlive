@@ -1,0 +1,10 @@
+{
+    "name": "truong.nq/zalo-chat-bot",
+    "authors": [
+        {
+            "name": "Nguyen Quoc Truong",
+            "email": "truong.nq@aris-vn.com"
+        }
+    ],
+    "require": {}
+}

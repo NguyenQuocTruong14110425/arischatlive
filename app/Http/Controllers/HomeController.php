@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 use Skype\Client;
 use BotBuilder\Client as Bot;
+
+use Zalo\Zalo;
+use Zalo\ZaloConfig;
 class HomeController extends Controller
 {
     function getAuthOptions()
@@ -21,9 +24,27 @@ class HomeController extends Controller
     }
     function index()
     {
-        $authOptions = $this->getAuthOptions();
-        $client = (new Bot($authOptions))->auth();
-        return view('welcome');
+//        $authOptions = $this->getAuthOptions();
+//        $client = (new Bot($authOptions))->auth();
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $helper = $zalo -> getRedirectLoginHelper();
+        $callBackUrl = "https://chatbotsdk.herokuapp.com/home";
+        $loginUrl = $helper->getLoginUrl($callBackUrl); // This is login url
+        return view('index',['loginUrl'=>$loginUrl]);
+    }
+    function home()
+    {
+
+        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+        $helper = $zalo -> getRedirectLoginHelper();
+        $callBackUrl = "https://chatbotsdk.herokuapp.com/home";
+        $oauthCode = isset($_GET['code']) ? $_GET['code'] : "THIS NOT CALLBACK PAGE !!!"; // get oauthoauth code from url params
+        $accessToken = $helper->getAccessToken($callBackUrl); // get access token
+        if ($accessToken != null) {
+            $expires = $accessToken->getExpiresAt(); // get expires time
+        }
+        dd($accessToken);
+        return view('home');
     }
     function SendMessage(Request $request)
     {

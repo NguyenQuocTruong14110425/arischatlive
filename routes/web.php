@@ -11,4 +11,5 @@
 */
 
 Route::get('/', 'HomeController@index');
+Route::get('/home', 'HomeController@home');
 Route::POST('/send', 'HomeController@SendMessage');

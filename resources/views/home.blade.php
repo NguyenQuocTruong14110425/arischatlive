@@ -76,6 +76,26 @@
     </style>
 </head>
 <body class="container">
-<a href="{{$loginUrl}}" class="btn btn-info">Login</a>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="row">
+    <a href="/reconnect" class="btn btn-success">Reconnect</a>
+    <div class="col-12">
+        <form method="post" action="/send">
+            @csrf
+            <div class="form-group">
+                <label>Message</label>
+                <input class="form-control" type="text" value="hello" name="mess" id="mess"/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">send</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-12">
+        <div id = "webchat">
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
