@@ -16,7 +16,7 @@ use Zalo\ZaloEndpoint;
 class HomeController extends Controller
 {
 
-    private $callBackUrl = "http://40a007a6.ngrok.io/arischatbotsdk/home";
+    private $callBackUrl = "https://8cc8c659.ngrok.io/arischatbotsdk/home";
     function getAuthOptions()
     {
         $authOptions = [
@@ -103,7 +103,7 @@ class HomeController extends Controller
 //        $response = $zalo->get(ZaloEndpoint::API_OA_GET_FOLLOWERS, $params);
 //        $result = $response->getDecodedBody(); // result
         $chatBot = new ChatBot();
-        $data_message = 'Chào bạn';
+        $data_message = 'mấy giờ';
         $mess = mb_strtolower($data_message,'UTF-8');
         $message_send = $chatBot->getMessage($mess);
         dd($message_send);
@@ -116,6 +116,15 @@ class HomeController extends Controller
         $data_message = $request->message;
         $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
         $accessToken = $zalo->getDefaultAccessToken();
+        $array = [
+            $data_id => [
+                "userId" =>   $data_id
+                ]
+        ];
+        $json = \GuzzleHttp\json_encode(array('data' => $array));
+        $path = storage_path('bot/user.json');
+        // write json to file
+        file_put_contents($path, $json);
         $chatBot = new ChatBot();
         $mess = mb_strtolower($data_message,'UTF-8');
         $message_send = $chatBot->getMessage($mess);
@@ -124,7 +133,7 @@ class HomeController extends Controller
             'message' => $message_send
         );
         $params = ['data' => $data];
-        if(isset($data_message))
+        if(isset($data_message) && isset($message_send))
         {
             $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);
             $result = $response->getDecodedBody(); // result
@@ -136,8 +145,8 @@ class HomeController extends Controller
         $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
         $accessToken = $zalo->getDefaultAccessToken();
         $data = array(
-            'uid' => 3958437030706763964, // user id
-            'message' => 'Chúc buổi chiều tốt lành!'
+            'uid' => 5483839820041396792, // user id
+            'message' => 'hello!'
         );
         $params = ['data' => $data];
         $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);

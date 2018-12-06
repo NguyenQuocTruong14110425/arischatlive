@@ -5,43 +5,44 @@
  */
 
 namespace Zalo;
-
+use Zalo\AIBot\LogicAdapter;
 
 class ChatBot
 {
     protected  $path_data;
+
+    protected  $data_traing;
 
     public function __construct()
     {
         $this->path_data = storage_path('bot/data.json');
     }
 
-    public function getMessage($input)
+    public function getDataTraining()
     {
         $string = file_get_contents($this->path_data);
-        $json_a = \GuzzleHttp\json_decode($string, true);
-        $arr_input = preg_split("/[\s,]+/",$input);
-        $rank = [];
-        foreach ($json_a as $key=>$value)
+        $json_input = \GuzzleHttp\json_decode($string, true);
+        $this->data_traing = $json_input;
+        $response = [];
+        foreach ($json_input as $key=>$value)
         {
-            $rank[$key] = 0;
-            foreach ($arr_input as $values)
-            {
-                $rate = 0;
-                $flag = strpos($key,$values);
-                if($flag !== false || $flag === 0)
-                {
-                    $rate = (int)($rank[$key]) + 1;
-                    $rank[$key] = $rate;
-                }
-            }
+            array_push($response,$key);
         }
-        $max_rate = max($rank);
-        $out_put = $json_a[array_search($max_rate,$rank)];
-        if($max_rate == 0)
+        return $response;
+    }
+    public function getMessage($input)
+    {
+        $flag = strpos($input,"mấy giờ");
+        if($flag !== false)
         {
-            $out_put = 'Chỉ chấp nhận tin nhắn của con người, vui lòng nhập lại ...';
+            return now();
         }
-        return $out_put;
+        else {
+            $data_traing = $this->getDataTraining();
+            $LogicAdapter = new LogicAdapter($data_traing, $input);
+            $match_word = $LogicAdapter->GetMatch();
+            $out_put = $this->data_traing[$match_word];
+            return $out_put;
+        }
     }
 }
