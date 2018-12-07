@@ -16,7 +16,7 @@ use Zalo\ZaloEndpoint;
 class HomeController extends Controller
 {
 
-    private $callBackUrl = "https://8cc8c659.ngrok.io/arischatbotsdk/home";
+    private $callBackUrl = "https://8c76979a.ngrok.io/arischatbotsdk/home";
     function getAuthOptions()
     {
         $authOptions = [
@@ -103,41 +103,56 @@ class HomeController extends Controller
 //        $response = $zalo->get(ZaloEndpoint::API_OA_GET_FOLLOWERS, $params);
 //        $result = $response->getDecodedBody(); // result
         $chatBot = new ChatBot();
-        $data_message = 'mấy giờ';
+        $data_message = 'nói chuyện nhảm quá';
         $mess = mb_strtolower($data_message,'UTF-8');
+        $user_id = '5483839820041396792';
         $message_send = $chatBot->getMessage($mess);
-        dd($message_send);
+        if($message_send !== false)
+        {
+            $model = $chatBot->traingBot($message_send,$data_message,$user_id);
+        }
+        dd($model);
         return view('home');
     }
     function webhook(Request $request)
     {
-
-        $data_id = $request->fromuid;
-        $data_message = $request->message;
-        $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
-        $accessToken = $zalo->getDefaultAccessToken();
-        $array = [
-            $data_id => [
-                "userId" =>   $data_id
-                ]
-        ];
-        $json = \GuzzleHttp\json_encode(array('data' => $array));
-        $path = storage_path('bot/user.json');
-        // write json to file
-        file_put_contents($path, $json);
-        $chatBot = new ChatBot();
-        $mess = mb_strtolower($data_message,'UTF-8');
-        $message_send = $chatBot->getMessage($mess);
-        $data = array(
-            'uid' => $data_id, // user id
-            'message' => $message_send
-        );
-        $params = ['data' => $data];
-        if(isset($data_message) && isset($message_send))
+        try
         {
-            $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);
-            $result = $response->getDecodedBody(); // result
+            $data_id = $request->fromuid;
+            $data_message = $request->message;
+            $zalo = new Zalo(ZaloConfig::getInstance()->getConfig());
+            $accessToken = $zalo->getDefaultAccessToken();
+            $data_write = $data_id . "\t:\t" . $data_message ."\n";
+            $path = storage_path('bot/user.txt');
+            // write json to file
+            file_put_contents($path, $data_write,FILE_APPEND);
+            $chatBot = new ChatBot();
+            $mess = mb_strtolower($data_message,'UTF-8');
+            $message_send = $chatBot->getMessage($mess);
+            if($message_send !== false)
+            {
+                $data = array(
+                    'uid' => $data_id, // user id
+                    'message' => $message_send
+                );
+                $data_bot_wirte = "Bot\t:\t" . $message_send ."\n################\n";
+                file_put_contents($path, $data_bot_wirte,FILE_APPEND);
+                $params = ['data' => $data];
+                if(isset($data_message) && isset($message_send))
+                {
+                    $response = $zalo->post(ZaloEndpoint::API_OA_SEND_TEXT_MSG, $params);
+                }
+                $chatBot->traingBot($message_send,$data_message,$data_id);
+            }
+
         }
+        catch (\Exception $e)
+        {
+            $path = storage_path('bot/.bot');
+            $error =  '#' . now()->getTimestamp() . ':' . $e->getMessage();
+            file_put_contents($path, $error,FILE_APPEND);
+        }
+
 
     }
     function sendMessToFriend()
